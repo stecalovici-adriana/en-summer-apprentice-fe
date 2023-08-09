@@ -1,5 +1,3 @@
-//import {useStyle} from ".src"
-
 // Navigate to a specific URL
 function navigateTo(url) {
   history.pushState(null, null, url);
@@ -65,14 +63,88 @@ async function fetchTicketEvents() {
   return data;
 }
 
+
+
+async function placeOrder(orderData) {
+
+  const url = 'http://localhost:8080/createOrder'; // Replace with your actual API endpoint
+
+  const options = {
+
+    method: 'POST',
+
+    headers: {
+
+      'Content-Type': 'application/json', // Set the appropriate content type
+
+      // Add any additional headers if needed
+
+    },
+
+    body: JSON.stringify(orderData), // Convert your data to JSON
+
+  };
+
+ 
+
+  try {
+
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+
+      const errorMessage = await response.text(); // Get the error message from the response body
+
+      throw new Error(`Network response was not ok: ${response.status} - ${errorMessage}`);
+
+    }
+
+    const data = await response.json();
+
+    return data;
+
+  } catch (error) {
+
+    console.error('Fetch error:', error);
+
+  }
+
+}
+
+ 
+
+// Example order data
+
+const orderData = {
+
+  "eventId": 1,
+
+  "ticketCategoryId": 1,
+
+  "numberOfTickets": 2
+
+};
+
+ 
+
+// Call the placeOrder function with the order data
+
+placeOrder(orderData).then(data => {
+
+  console.log('Order placed:', data);
+
+  // Process the response data as needed
+
+});
+
 function renderHomePage(eventsData) {
   const mainContentDiv = document.querySelector('.main-content-component');
   mainContentDiv.innerHTML = getHomePageTemplate();
 
   console.log('function', fetchTicketEvents());
   fetchTicketEvents().then((data)=>{
-    console.log('data', data);
-  });
+    console.log('data', data);
+  });
 
   const eventsContainer = document.querySelector('.events');
 
