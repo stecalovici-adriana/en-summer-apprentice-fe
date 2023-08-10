@@ -144,7 +144,7 @@ function renderHomePage(eventsData) {
   console.log('function', fetchTicketEvents());
   fetchTicketEvents().then((data)=>{
     console.log('data', data);
-  });
+  })
 
   const eventsContainer = document.querySelector('.events');
 
@@ -153,18 +153,34 @@ function renderHomePage(eventsData) {
     eventCard.classList.add('event-card');
 
     const contentMarkup = `
-      <header>
-        <h2 class="event-title text-2xl font-bold">${eventData.eventName}</h2>
-      </header>
-      <div class="content">
-        <p class="description text-gray-700">${eventData.eventDescription}</p>
-        <button class="buy-button bg-blue-500 text-white px-4 py-2 rounded mt-4">Buy Tickets</button>
+  <header>
+    <h2 class="event-title text-2xl font-bold">${eventData.eventName}</h2>
+  </header>
+  <div class="content">
+    <p class="description text-gray-700">${eventData.eventDescription}</p>
+    <div class="ticket-section">
+      <p class="ticket-type-text">Choose Ticket Type:</p>
+      <select class="ticket-type bg-white border border-gray-300 px-2 py-1 rounded mt-2">
+        <option value="${eventData.ticketCategory[0].ticketCategoryId}">${eventData.ticketCategory[0].description}</option>
+        <option value="${eventData.ticketCategory[1].ticketCategoryId}">${eventData.ticketCategory[1].description}</option>
+      </select>
+      <div class="quantity">
+        <button class="quantity-btn decrease">-</button>
+        <input type="number" class="ticket-quantity" value="1" min="1">
+        <button class="quantity-btn increase">+</button>
       </div>
-    `;
+      <button class="buy-button bg-blue-500 text-white px-4 py-2 rounded mt-2">Buy Tickets</button>
+    </div>
+  </div>
+`;
+
 
     eventCard.innerHTML = contentMarkup;
     eventsContainer.appendChild(eventCard);
+
   });
+  setupQuantityButtons();
+
 }
 
 function renderOrdersPage() {
@@ -183,6 +199,26 @@ async function renderContent(url) {
   } else if (url === '/orders') {
     renderOrdersPage();
   }
+}
+
+function setupQuantityButtons() {
+  const decreaseBtns = document.querySelectorAll('.quantity-btn.decrease');
+  const increaseBtns = document.querySelectorAll('.quantity-btn.increase');
+  const quantityInputs = document.querySelectorAll('.ticket-quantity');
+
+  decreaseBtns.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+      if (quantityInputs[index].value > 1) {
+        quantityInputs[index].value--;
+      }
+    });
+  });
+
+  increaseBtns.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+      quantityInputs[index].value++;
+    });
+  });
 }
 
 // Call the setup functions

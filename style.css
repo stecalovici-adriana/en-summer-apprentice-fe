@@ -113,3 +113,71 @@ h1 {
 .event-card .buy-button:hover {
   background-color: #c0381c;
 }
+
+.event-card .content {
+  margin-top: 12px; /* Adjust the top margin for spacing */
+}
+
+.event-card .ticket-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-card .ticket-type {
+  margin-bottom: 8px; /* Add spacing between dropdown and button */
+}
+
+.event-card .buy-button {
+  align-self: flex-start; /* Align the button to the left */
+}
+
+.event-card .content {
+  margin-top: 12px;
+}
+
+.event-card .ticket-section {
+  margin-top: 10px;
+}
+
+.event-card .ticket-type-text {
+  font-size: 14px;
+  color: #555;
+}
+
+.event-card .ticket-type {
+  margin-top: 4px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.event-card .quantity {
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.event-card .quantity-btn {
+  background-color: #ddd;
+  border: none;
+  color: #333;
+  font-size: 16px;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.event-card .quantity-btn:hover {
+  background-color: #ccc;
+}
+
+.event-card .ticket-quantity {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px;
+  margin: 0 4px;
+  width: 40px;
+  text-align: center;
+}
+
