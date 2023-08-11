@@ -117,9 +117,9 @@ async function placeOrder(orderData) {
 
 const orderData = {
 
-  "eventId": 1,
-
   "ticketCategoryId": 1,
+
+  "eventId": 1,
 
   "numberOfTickets": 2
 
@@ -151,7 +151,7 @@ function renderHomePage(eventsData) {
   eventsData.forEach(eventData => {
     const eventCard = document.createElement('div');
     eventCard.classList.add('event-card');
-
+    console.log('bbbbb', eventData)
     const contentMarkup = `
   <header>
     <h2 class="event-title text-2xl font-bold">${eventData.eventName}</h2>
@@ -160,7 +160,7 @@ function renderHomePage(eventsData) {
     <p class="description text-gray-700">${eventData.eventDescription}</p>
     <div class="ticket-section">
       <p class="ticket-type-text">Choose Ticket Type:</p>
-      <select class="ticket-type bg-white border border-gray-300 px-2 py-1 rounded mt-2">
+      <select class="ticket-type-${eventData.eventID} bg-white border border-gray-300 px-2 py-1 rounded mt-2">
         <option value="${eventData.ticketCategory[0].ticketCategoryId}">${eventData.ticketCategory[0].description}</option>
         <option value="${eventData.ticketCategory[1].ticketCategoryId}">${eventData.ticketCategory[1].description}</option>
       </select>
@@ -169,7 +169,7 @@ function renderHomePage(eventsData) {
         <input type="number" class="ticket-quantity" value="1" min="1">
         <button class="quantity-btn increase">+</button>
       </div>
-      <button class="buy-button bg-blue-500 text-white px-4 py-2 rounded mt-2">Buy Tickets</button>
+      <button class="buy-button bg-blue-500 text-white px-4 py-2 rounded mt-2" id="buyTicketsBtn">Buy Tickets</button>
     </div>
   </div>
 `;
@@ -178,28 +178,40 @@ function renderHomePage(eventsData) {
     eventCard.innerHTML = contentMarkup;
     eventsContainer.appendChild(eventCard);
 
+    const buyTicketsButton = eventCard.querySelector('#buyTicketsBtn');
+    const quantityInput = eventCard.querySelector('.ticket-quantity');
+
+    buyTicketsButton.addEventListener('click', async () => 
+    {
+     const ticketCategorySelect= document.querySelector(`.ticket-type-${eventData.eventID}`);//-${eventData.eventId}
+     const selectedTicketCategory=ticketCategorySelect.value;
+     
+      const ticketCategoryID = parseInt(ticketCategorySelect.value);
+      const eventID = eventData.eventID; // ID-ul evenimentului
+      const numberOfTickets = parseInt(quantityInput.value);
+console.log('aaaa', eventID);
+
+      const orderData = {
+        ticketCategoryId:+ticketCategoryID,
+        eventId:+eventID,
+        numberOfTickets:+numberOfTickets
+      };
+console.log(orderData);
+      try {
+        const response = await placeOrder(orderData);
+        console.log('Order placed:', response);
+      } catch (error) {
+        console.error('Error placing order:', error);
+      }
+    });
+
+
   });
   setupQuantityButtons();
 
+
 }
 
-function renderOrdersPage() {
-  const mainContentDiv = document.querySelector('.main-content-component');
-  mainContentDiv.innerHTML = getOrdersPageTemplate();
-}
-
-// Render content based on URL
-async function renderContent(url) {
-  const mainContentDiv = document.querySelector('.main-content-component');
-  mainContentDiv.innerHTML = '';
-
-  if (url === '/') {
-    const eventsData = await fetchTicketEvents();
-    renderHomePage(eventsData);
-  } else if (url === '/orders') {
-    renderOrdersPage();
-  }
-}
 
 function setupQuantityButtons() {
   const decreaseBtns = document.querySelectorAll('.quantity-btn.decrease');
@@ -220,6 +232,24 @@ function setupQuantityButtons() {
     });
   });
 }
+function renderOrdersPage(categories) { //fara param
+  const mainContentDiv = document.querySelector('.main-content-component');
+  mainContentDiv.innerHTML = getOrdersPageTemplate();
+}
+
+// Render content based on URL
+async function renderContent(url) {
+  const mainContentDiv = document.querySelector('.main-content-component');
+  mainContentDiv.innerHTML = '';
+
+  if (url === '/') {
+    const eventsData = await fetchTicketEvents();
+    renderHomePage(eventsData);
+  } else if (url === '/orders') {
+    renderOrdersPage();
+  }
+}
+
 
 // Call the setup functions
 setupNavigationEvents();
