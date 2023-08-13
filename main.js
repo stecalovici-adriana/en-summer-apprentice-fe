@@ -8,7 +8,7 @@ function navigateTo(url) {
 function getHomePageTemplate() {
   return `
     <div id="content" >
-      <img src="./src/assets/Endava.png" alt="summer">
+      <img src="./src/assets/image.jpeg" alt="summer">
       <div class="events flex items-center justify-center flex-wrap">
       </div>
     </div>
@@ -137,7 +137,8 @@ placeOrder(orderData).then(data => {
 
 });
 
-function renderHomePage(eventsData) {
+
+async function renderHomePage(eventsData) {
   const mainContentDiv = document.querySelector('.main-content-component');
   mainContentDiv.innerHTML = getHomePageTemplate();
 
@@ -148,15 +149,27 @@ function renderHomePage(eventsData) {
 
   const eventsContainer = document.querySelector('.events');
 
-  eventsData.forEach(eventData => {
+  const eventImages = [
+    'src/assets/untold.jpg',
+    'src/assets/electric.jpg',
+    'src/assets/football.jpg',
+    'src/assets/wine.jpg',
+  ];
+  
+
+  eventsData.forEach((eventData, index) => {
     const eventCard = document.createElement('div');
     eventCard.classList.add('event-card');
     console.log('bbbbb', eventData)
+
+    const eventImage = eventImages[index];
+
     const contentMarkup = `
   <header>
     <h2 class="event-title text-2xl font-bold">${eventData.eventName}</h2>
   </header>
   <div class="content">
+  <img src="${eventImage}" alt="${eventData.eventName}" class="event-image">
     <p class="description text-gray-700">${eventData.eventDescription}</p>
     <div class="ticket-section">
       <p class="ticket-type-text">Choose Ticket Type:</p>
