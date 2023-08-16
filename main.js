@@ -15,17 +15,10 @@ function getHomePageTemplate() {
   `;
 }
 
-/*function getOrdersPageTemplate() {
-  return `
-    <div id="content">
-      <h1 class="text-2xl mb-4 mt-8 text-center">Purchased Tickets</h1>
-    </div>
-  `;
-}*/
 
 function getOrdersPageTemplate() {
   return `
-    <div id="content" class="white-background">
+    <div id="content" class="black-background">
       <h1 class="text-2xl mb-4 mt-8 text-center">Purchased Tickets</h1>
       <div class="sort-buttons">
         <button class="btn btn-sort" id="sortAscendingBtn">Sort Ascending By Price</button>
@@ -89,7 +82,6 @@ function setupInitialPage() {
     setupSortButtons(); // Adăugați această linie pentru a atașa evenimentele de sortare inițiale
   }
   
-  //setupFilterButton(); // Apelați funcția de configurare a filtrului
 }
 
 
@@ -113,12 +105,12 @@ async function sortOrders(ascending) {
     return ascending ? a.totalPrice - b.totalPrice : b.totalPrice - a.totalPrice;
   });
 
-  const ordersContainer = document.querySelector('.orders');
-  ordersContainer.innerHTML = ''; // Golește containerul de comenzilor
+  const ordersTable = document.querySelector('.orders-table tbody');
+  ordersTable.innerHTML = ''; // Clear the existing table body
 
   for (const orderData of ordersData) {
-    const orderCard = await renderOrderCard(orderData);
-    ordersContainer.appendChild(orderCard);
+    const orderRow = await renderOrderRow(orderData);
+    ordersTable.appendChild(orderRow); // Append the sorted rows to the existing table body
   }
 }
 
@@ -219,7 +211,7 @@ async function fetchTicketEvents() {
 async function fetchOrders() {
   const response = await fetch('https://localhost:7245/api/Order/GetAll');
   const orders = await response.json();
-
+  console.log("sjefsf", orders);
   orders.forEach(order => {
     order.totalPrice = parseFloat(order.totalPrice);
   });
@@ -283,27 +275,44 @@ function setupQuantityButtons() {
   });
 }
 
-async function renderOrderCard(orderData) {
-  const orderCard = document.createElement('div');
-  orderCard.classList.add('order-card');
+async function renderOrderRow(orderData) {
+  const orderRow = document.createElement('tr');
 
+  // Adaugă evenimentele de clic pentru butoanele "Modify" și "Delete"
+  const modifyButton = document.createElement('button');
+  modifyButton.textContent = 'Modify';
+  modifyButton.classList.add('btn', 'btn-modify');
+  modifyButton.addEventListener('click', () => {
+    // Apelul funcției sau metoda pentru modificare (poți adăuga logica aici)
+    console.log('Modify button clicked for Order ID:', orderData.orderId);
+  });
+
+  const deleteButton = document.createElement('button');
+  deleteButton.textContent = 'Delete';
+  deleteButton.classList.add('btn', 'btn-delete');
+  deleteButton.addEventListener('click', () => {
+    // Apelul funcției sau metoda pentru ștergere (poți adăuga logica aici)
+    console.log('Delete button clicked for Order ID:', orderData.orderId);
+  });
+
+  // Construiește conținutul rândului
   const contentMarkup = `
-    <div class="order-details">
-      <p><strong>Order ID:</strong> ${orderData.orderId}</p>
-      <p><strong>Date:</strong> ${orderData.orderedAt}</p>
-      <p><strong>Ticket Category:</strong> ${orderData.ticketCategory}</p>
-      <p><strong>Number of Tickets:</strong> ${orderData.numberOfTickets}</p>
-      <p><strong>Total Price:</strong> ${orderData.totalPrice}</p>
-    </div>
-    <div class="order-actions">
-      <button class="btn btn-modify">Modify</button>
-      <button class="btn btn-delete">Delete</button>
-    </div>
+    <td>${orderData.orderID !== undefined ? orderData.orderID : ''}</td>
+    <td>${orderData.orderedAt}</td>
+    <td>${orderData.ticketCategory}</td>
+    <td>${orderData.numberOfTickets}</td>
+    <td>${orderData.totalPrice}</td>
+    <td>
+      ${modifyButton.outerHTML}
+      ${deleteButton.outerHTML}
+    </td>
   `;
 
-  orderCard.innerHTML = contentMarkup;
-  return orderCard;
+  orderRow.innerHTML = contentMarkup;
+  return orderRow;
 }
+
+
 
 async function renderOrdersPage() {
   const mainContentDiv = document.querySelector('.main-content-component');
@@ -311,21 +320,38 @@ async function renderOrdersPage() {
 
   const ordersData = await fetchOrders();
 
-  const ordersContainer = document.createElement('div');
-  ordersContainer.classList.add('orders');
+  const ordersTable = document.createElement('table');
+  ordersTable.classList.add('orders-table');
 
-  const ordersTitle = document.createElement('h1');
-  ordersTitle.classList.add('orders-title');
-  ordersContainer.appendChild(ordersTitle);
+  const tableHeaderMarkup = `
+    <thead>
+      <tr>
+        <th class="text-black">Order ID</th>
+        <th class="text-black">Date</th>
+        <th class="text-black">Ticket Category</th>
+        <th class="text-black">Number of Tickets</th>
+        <th class="text-black">Total Price</th>
+        <th class="text-black">Actions</th>
+      </tr>
+    </thead>
+  `;
 
+  const tableBody = document.createElement('tbody');
   for (const orderData of ordersData) {
-    const orderCard = await renderOrderCard(orderData);
-    ordersContainer.appendChild(orderCard);
+    const orderRow = await renderOrderRow(orderData);
+    tableBody.appendChild(orderRow);
   }
 
-  mainContentDiv.appendChild(ordersContainer);
+  ordersTable.innerHTML = tableHeaderMarkup;
+  ordersTable.appendChild(tableBody);
+
+  // Append the orders table directly to the existing '.orders' container
+  mainContentDiv.querySelector('.orders').appendChild(ordersTable);
+
   setupSortButtons();
 }
+
+
 
 // Render content based on URL
 async function renderContent(url) {
