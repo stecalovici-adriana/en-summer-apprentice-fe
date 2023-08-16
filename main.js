@@ -58,13 +58,6 @@ function setupMobileMenuEvent() {
   }
 }
 
-/*function setupPopstateEvent() {
-  window.addEventListener('popstate', () => {
-    const currentUrl = window.location.pathname;
-    renderContent(currentUrl);
-  });
-}*/
-
 function setupPopstateEvent() {
   window.addEventListener('popstate', () => {
     const currentUrl = window.location.pathname;
@@ -72,11 +65,6 @@ function setupPopstateEvent() {
     setupSortButtons(); // Adăugați această linie pentru a re-atașa evenimentele de sortare
   });
 }
-
-/*function setupInitialPage() {
-  const initialUrl = window.location.pathname;
-  renderContent(initialUrl);
-}*/
 
 function setupSortButtons() {
   const sortAscendingBtn = document.getElementById('sortAscendingBtn');
@@ -94,8 +82,16 @@ function setupInitialPage() {
   const initialUrl = window.location.pathname;
   renderContent(initialUrl);
 
-  setupSortButtons(); // Adăugați această linie pentru a atașa evenimentele de sortare inițiale
+  const sortAscendingBtn = document.getElementById('sortAscendingBtn');
+  const sortDescendingBtn = document.getElementById('sortDescendingBtn');
+
+  if (sortAscendingBtn && sortDescendingBtn) {
+    setupSortButtons(); // Adăugați această linie pentru a atașa evenimentele de sortare inițiale
+  }
+  
+  //setupFilterButton(); // Apelați funcția de configurare a filtrului
 }
+
 
 async function renderOrders() {
   const ordersData = await fetchOrders();

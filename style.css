@@ -24,7 +24,7 @@ h1 {
 }
 
 .event-title {
-  color: #de411b
+  color: rgb(33, 103, 253);
 }
 
 .event img {
@@ -50,7 +50,7 @@ h1 {
 }
 
 .link-item {
-  color: #de411b
+  color: red;
 }
 
 .logo {
@@ -59,11 +59,11 @@ h1 {
 }
 
 .add-btn {
-  background-color: #de411b;
+  background-color: red;
 }
 
 .add-to-cart-btn {
-  background: #de411b;
+  background: red;
   margin: 22px auto;
   display: block;
   width: 100%;
@@ -82,10 +82,12 @@ h1 {
   margin: 10px; /* Add some margin for spacing between event cards */
   padding: 16px; /* Add padding for content inside the event card */
   background-color: #fff; /* Set a background color for the event card */
+  border-radius: 8px; /* Add border-radius for rounded corners */
 }
 
+
 .event-card .event-title {
-  color: #de411b;
+  color: red;
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 8px;
@@ -102,19 +104,24 @@ h1 {
   font-size: 14px;
 }
 
+/* Stilizare pentru butonul de cumpărare */
 .event-card .buy-button {
-  background-color: #de411b;
+  background-color: red;
   color: #fff;
   padding: 8px 16px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
+  text-align: center; /* Aliniere text pe mijloc */
+  width: 100%; /* Lățime completă pentru aliniere */
+  margin-top: 10px; /* Adăugăm un spațiu între buton și secțiunea de ticket-uri */
 }
 
 .event-card .buy-button:hover {
-  background-color: #c0381c;
+  background-color: #00b300;
 }
+
 
 .event-card .content {
   margin-top: 12px; /* Adjust the top margin for spacing */
@@ -195,8 +202,8 @@ h1 {
   text-align: center;
 }
 
-.white-background {
-  background-color: #fff; /* Set the background color to white */
+.black-background {
+  background-color: rgba(0, 0, 0, 0.1); /* Set the background color to white */
 }
 
 /* Stilizare pentru cardurile de comandă */
@@ -208,6 +215,7 @@ h1 {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-color: #ffffff;
 }
+
 
 .order-details {
   margin-bottom: 12px;
@@ -227,6 +235,8 @@ h1 {
   justify-content: flex-end;
 }
 
+
+
 .btn {
   padding: 6px 12px;
   margin-left: 6px;
@@ -234,6 +244,7 @@ h1 {
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  background-color: white;
 }
 
 .btn-modify {
@@ -242,7 +253,7 @@ h1 {
 }
 
 .btn-delete {
-  background-color: #d9534f;
+  background-color: red;
   color: #ffffff;
 }
 
@@ -252,3 +263,4 @@ h1 {
   font-weight: bold;
   margin-bottom: 16px;
 }
+
