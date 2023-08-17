@@ -94,7 +94,7 @@ async function renderOrders() {
 
   // Iterează prin comenzile sortate și adaugă-le la container
   for (const orderData of ordersData) {
-    const orderRow = await renderOrderCard(orderData);
+    const orderRow = await renderOrderRow(orderData);
     ordersContainer.appendChild(orderRow);
   }
 }
@@ -172,8 +172,7 @@ async function renderHomePage(eventsData) {
 
     buyTicketsButton.addEventListener('click', async () => 
     {
-     const ticketCategorySelect= document.querySelector(`.ticket-type-${eventData.eventID}`);//-${eventData.eventId}
-     const selectedTicketCategory=ticketCategorySelect.value;
+     const ticketCategorySelect= document.querySelector(`.ticket-type-${eventData.eventID}`);
      
       const ticketCategoryID = parseInt(ticketCategorySelect.value);
       const eventID = eventData.eventID; // ID-ul evenimentului
@@ -274,6 +273,7 @@ function setupQuantityButtons() {
     });
   });
 }
+
 async function patchOrders(orderID, numberOfTickets, ticketCategoryID) {
   const url = `https://localhost:7245/api/Order/Patch`; // Update with the correct URL
   const patchData = {
