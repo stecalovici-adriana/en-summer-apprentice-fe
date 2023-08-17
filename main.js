@@ -79,7 +79,7 @@ function setupInitialPage() {
   const sortDescendingBtn = document.getElementById('sortDescendingBtn');
 
   if (sortAscendingBtn && sortDescendingBtn) {
-    setupSortButtons(); // Adăugați această linie pentru a atașa evenimentele de sortare inițiale
+    setupSortButtons(); 
   }
   
 }
@@ -94,8 +94,8 @@ async function renderOrders() {
 
   // Iterează prin comenzile sortate și adaugă-le la container
   for (const orderData of ordersData) {
-    const orderCard = await renderOrderCard(orderData);
-    ordersContainer.appendChild(orderCard);
+    const orderRow = await renderOrderCard(orderData);
+    ordersContainer.appendChild(orderRow);
   }
 }
 
@@ -144,7 +144,7 @@ async function renderHomePage(eventsData) {
   <header>
     <h2 class="event-title text-2xl font-bold">${eventData.eventName}</h2>
   </header>
-  <div class="content">
+  <div class="content-event">
   <img src="${eventImage}" alt="${eventData.eventName}" class="event-image">
     <p class="description text-gray-700">${eventData.eventDescription}</p>
     <div class="ticket-section">
@@ -274,45 +274,130 @@ function setupQuantityButtons() {
     });
   });
 }
+async function patchOrders(orderID, numberOfTickets, ticketCategoryID) {
+  const url = `https://localhost:7245/api/Order/Patch`; // Update with the correct URL
+  const patchData = {
+    orderId: orderID,
+    numberOfTickets: numberOfTickets,
+    ticketCategoryId: ticketCategoryID
+  };
 
-async function renderOrderRow(orderData) {
-  const orderRow = document.createElement('tr');
+  try {
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(patchData)
+    });
 
-  // Adaugă evenimentele de clic pentru butoanele "Modify" și "Delete"
-  const modifyButton = document.createElement('button');
-  modifyButton.textContent = 'Modify';
-  modifyButton.classList.add('btn', 'btn-modify');
-  modifyButton.addEventListener('click', () => {
-    // Apelul funcției sau metoda pentru modificare (poți adăuga logica aici)
-    console.log('Modify button clicked for Order ID:', orderData.orderId);
-  });
+    if (!response.ok) {
+      throw new Error(`Patch request failed with status ${response.status}`);
+    }
 
-  const deleteButton = document.createElement('button');
-  deleteButton.textContent = 'Delete';
-  deleteButton.classList.add('btn', 'btn-delete');
-  deleteButton.addEventListener('click', () => {
-    // Apelul funcției sau metoda pentru ștergere (poți adăuga logica aici)
-    console.log('Delete button clicked for Order ID:', orderData.orderId);
-  });
-
-  // Construiește conținutul rândului
-  const contentMarkup = `
-    <td>${orderData.orderID !== undefined ? orderData.orderID : ''}</td>
-    <td>${orderData.orderedAt}</td>
-    <td>${orderData.ticketCategory}</td>
-    <td>${orderData.numberOfTickets}</td>
-    <td>${orderData.totalPrice}</td>
-    <td>
-      ${modifyButton.outerHTML}
-      ${deleteButton.outerHTML}
-    </td>
-  `;
-
-  orderRow.innerHTML = contentMarkup;
-  return orderRow;
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error patching order:', error);
+    throw error;
+  }
 }
 
 
+async function renderOrderRow(orderData) {
+  const orderRow = document.createElement('tr');
+  orderRow.classList.add('order-row');
+  const contentMarkup = `
+  <td class="order-details">${orderData.orderID}</td>
+  <td class="order-details">${orderData.orderedAt}</td>
+  <td class="order-details">${orderData.ticketCategory}</td>
+  <td class="order-details">
+      <span class="ticket-count">${orderData.numberOfTickets}</span>
+      <input type="number" class="input-ticket-count" value="${orderData.numberOfTickets}" style="display: none;">
+    </td>
+  <td class="order-details">${orderData.totalPrice}</td>
+  <td class="order-actions">
+    <button class="btn btn-modify">Modify</button>
+    <button class="btn btn-delete">Delete</button>
+    <button class="btn btn-save" style="background-color: green;" hidden>Save</button>
+    <button class="btn btn-cancel" style="background-color: red;" hidden>Cancel</button>
+  </td>
+`;
+
+orderRow.innerHTML = contentMarkup;
+  const modifyButton = orderRow.querySelector('.btn-modify');
+  const deleteButton = orderRow.querySelector('.btn-delete');
+  const saveButton = orderRow.querySelector('.btn-save');
+  const cancelButton = orderRow.querySelector('.btn-cancel');
+  const ticketCountDisplay = orderRow.querySelector('.ticket-count');
+  const inputTicketCount = orderRow.querySelector('.input-ticket-count');
+
+  modifyButton.addEventListener('click', () => {
+    modifyButton.style.display = 'none';
+    deleteButton.style.display = 'none';
+    saveButton.style.display = 'inline';
+    cancelButton.style.display = 'inline';
+
+    ticketCountDisplay.style.display = 'none';
+    inputTicketCount.style.display = 'inline';
+  });
+
+  saveButton.addEventListener('click', () => {
+    const newTicketCount = inputTicketCount.value;
+    // Aici poți adăuga cod pentru a actualiza numărul de bilete în obiectul orderData sau în altă parte
+    ticketCountDisplay.textContent = newTicketCount;
+
+    modifyButton.style.display = 'inline';
+    deleteButton.style.display = 'inline';
+    saveButton.style.display = 'none';
+    cancelButton.style.display = 'none';
+
+    ticketCountDisplay.style.display = 'inline';
+    inputTicketCount.style.display = 'none';
+  });
+
+  cancelButton.addEventListener('click', () => {
+    modifyButton.style.display = 'inline';
+    deleteButton.style.display = 'inline';
+    saveButton.style.display = 'none';
+    cancelButton.style.display = 'none';
+
+    ticketCountDisplay.style.display = 'inline';
+    inputTicketCount.style.display = 'none';
+  });
+
+  deleteButton.addEventListener('click', async () => {
+    const result = await deleteEventById(orderData.orderID);
+    if (result.success) {
+      // Dacă ștergerea a fost cu succes, reîncărcați pagina pentru a reflecta modificările
+      renderOrdersPage();
+    } else {
+      console.error('Error deleting order:', result.message);
+    }
+  });
+
+  //orderRow.innerHTML = contentMarkup;
+  return orderRow;
+}
+
+async function deleteEventById(orderID) {
+
+  try {
+    const response = await fetch(`https://localhost:7245/api/Order/Delete?id=${orderID}`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok) {
+      return { success: true, message: 'Order deleted successfully.' };
+    } else {
+      const errorData = await response.json();
+      return { success: false, message: errorData.message };
+    }
+  } catch (error) {
+    console.error('Error deleting order:', error);
+    return { success: false, message: 'An error occurred while deleting the order.' };
+  }
+}
 
 async function renderOrdersPage() {
   const mainContentDiv = document.querySelector('.main-content-component');
@@ -324,29 +409,29 @@ async function renderOrdersPage() {
   ordersTable.classList.add('orders-table');
 
   const tableHeaderMarkup = `
-    <thead>
-      <tr>
-        <th class="text-black">Order ID</th>
-        <th class="text-black">Date</th>
-        <th class="text-black">Ticket Category</th>
-        <th class="text-black">Number of Tickets</th>
-        <th class="text-black">Total Price</th>
-        <th class="text-black">Actions</th>
-      </tr>
-    </thead>
+  <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>Date</th>
+      <th>Ticket Category</th>
+      <th>Number of Tickets</th>
+      <th>Total Price</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
   `;
 
+ordersTable.innerHTML = tableHeaderMarkup;
+
   const tableBody = document.createElement('tbody');
+  console.log("OrdersData",orderData);
   for (const orderData of ordersData) {
     const orderRow = await renderOrderRow(orderData);
     tableBody.appendChild(orderRow);
   }
 
-  ordersTable.innerHTML = tableHeaderMarkup;
   ordersTable.appendChild(tableBody);
-
-  // Append the orders table directly to the existing '.orders' container
-  mainContentDiv.querySelector('.orders').appendChild(ordersTable);
+  mainContentDiv.appendChild(ordersTable);
 
   setupSortButtons();
 }
@@ -366,9 +451,11 @@ async function renderContent(url) {
   }
 }
 
-
 // Call the setup functions
-setupNavigationEvents();
-setupMobileMenuEvent();
-setupPopstateEvent();
-setupInitialPage();
+document.addEventListener('DOMContentLoaded', () => {
+  setupNavigationEvents();
+  setupMobileMenuEvent();
+  setupPopstateEvent();
+  setupInitialPage();
+  setupSortButtons();
+});
