@@ -310,7 +310,7 @@ async function renderOrderRow(orderData) {
   const contentMarkup = `
   <td class="order-details">${orderData.orderID}</td>
   <td class="order-details">${orderData.orderedAt}</td>
-  <td class="order-details">${orderData.ticketCategory}</td>
+  <td class="order-details ticketCategory-data">${orderData.ticketCategory}</td>
   <td class="order-details">
       <span class="ticket-count">${orderData.numberOfTickets}</span>
       <input type="number" class="input-ticket-count" value="${orderData.numberOfTickets}" style="display: none;">
@@ -331,13 +331,14 @@ orderRow.innerHTML = contentMarkup;
   const cancelButton = orderRow.querySelector('.btn-cancel');
   const ticketCountDisplay = orderRow.querySelector('.ticket-count');
   const inputTicketCount = orderRow.querySelector('.input-ticket-count');
+  const ticketCategoryData = orderRow.querySelector('.ticketCategory-data');
 
   modifyButton.addEventListener('click', () => {
     modifyButton.style.display = 'none';
     deleteButton.style.display = 'none';
     saveButton.style.display = 'inline';
     cancelButton.style.display = 'inline';
-
+    ticketCategoryData.classList.add = 'hidden';
     ticketCountDisplay.style.display = 'none';
     inputTicketCount.style.display = 'inline';
   });
