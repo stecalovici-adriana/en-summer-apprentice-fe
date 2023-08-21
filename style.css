@@ -310,3 +310,58 @@ h1 {
 .order-row:hover {
   background-color: #e0e0e0; /* Change background color on hover */
 }
+
+#eventSearchInput {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Stilizare pentru butonul de căutare */
+#searchButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Stilizare pentru butonul de căutare la hover */
+#searchButton:hover {
+  background-color: #0056b3;
+}
+
+/* Stilizare pentru butonul "Show Event" */
+#showEventButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ff3333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px; /* Adăugăm un spațiu între butoane */
+}
+
+#showEventButton:hover {
+  background-color: #cc0000;
+}
+
+/* Stilizare pentru butonul de filtrare după locație */
+#filterByVenueBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ffcc00; /* Schimbați culoarea de fundal a butonului la alegerea dvs. */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px; /* Adăugați un spațiu între buton și celelalte elemente */
+}
+
+#filterByVenueBtn:hover {
+  background-color: #ffaa00; /* Schimbați culoarea butonului la hover, dacă doriți */
+}

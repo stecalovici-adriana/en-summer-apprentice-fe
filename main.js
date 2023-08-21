@@ -7,13 +7,20 @@ function navigateTo(url) {
 // HTML templates
 function getHomePageTemplate() {
   return `
-    <div id="content" >
+    <div id="content">
       <img src="./src/assets/image.jpeg" alt="summer">
+      <div class="search-container">
+      <input type="text" id="eventSearchInput" placeholder="Search event by name">
+      <button id="eventSearchButton">Search</button>
+      <button id="showEventButton">Show Event</button>
+      <button id="filterByVenueBtn">Filtrare după Locație</button>
+      </div>
       <div class="events flex items-center justify-center flex-wrap">
       </div>
     </div>
   `;
 }
+
 
 
 function getOrdersPageTemplate() {
@@ -71,10 +78,18 @@ function setupSortButtons() {
   });
 }
 
-function setupInitialPage() {
+async function setupInitialPage() {
   const initialUrl = window.location.pathname;
-  renderContent(initialUrl);
+  await renderContent(initialUrl);
 
+  const eventSearchInput = document.getElementById('eventSearchInput');
+  // const showEventButton = document.getElementById('showEventButton');
+  // console.log('input',showEventButton)
+  // if (showEventButton) {
+  //   showEventButton.addEventListener('click', () => {
+  //     performSearch(); // Apelează funcția performSearch() pentru a afișa evenimentele filtrate
+  //   });
+  // }
   const sortAscendingBtn = document.getElementById('sortAscendingBtn');
   const sortDescendingBtn = document.getElementById('sortDescendingBtn');
 
@@ -82,6 +97,100 @@ function setupInitialPage() {
     setupSortButtons(); 
   }
   
+}
+
+
+
+function filterEventsByName(eventsData, searchTerm) {
+  console.log('dataa', eventsData);
+  return eventsData.filter((eventData) =>
+    eventData.eventName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  
+}
+
+function performSearch(eventsData) {
+  
+  const searchInput = document.getElementById('eventSearchInput').value.toLowerCase().trim();
+
+  console.log('input', searchInput, eventsData);
+
+  const filteredEvents = filterEventsByName(eventsData, searchInput);
+  renderFilteredEvents(filteredEvents);
+}
+
+
+/*function renderFilteredEvents(filteredEvents) {
+
+  console.log('filter', filteredEvents);
+
+  const eventsContainer = document.querySelector('.events');
+  eventsContainer.innerHTML = '';
+  const eventCard = document.createElement('div');
+  if (filteredEvents.length === 0) {
+    const noResultsMessage = document.createElement('p');
+    noResultsMessage.textContent = 'Nu au fost găsite evenimente care să corespundă căutării.';
+    eventsContainer.appendChild(noResultsMessage);
+  } else {
+    filteredEvents.forEach((event) => {
+      eventsContainer.appendChild(eventCard);
+    });
+  }
+  
+}*/
+
+function renderFilteredEvents(filteredEvents) {
+  const eventsContainer = document.querySelector('.events');
+  eventsContainer.innerHTML = '';
+
+  if (filteredEvents.length === 0) {
+    const noResultsMessage = document.createElement('p');
+    noResultsMessage.textContent = 'Nu au fost găsite evenimente care să corespundă căutării.';
+    eventsContainer.appendChild(noResultsMessage);
+  } else {
+    filteredEvents.forEach((event) => {
+      const eventCard = createEventCard(event); // Creează un card pentru fiecare eveniment
+      eventsContainer.appendChild(eventCard); // Adaugă cardul evenimentului în container
+    });
+  }
+}
+function createEventCard(eventData) {
+  // Creează un element <div> pentru cardul evenimentului
+  const eventCard = document.createElement('div');
+  eventCard.classList.add('event-card'); // Adaugă clasa CSS 'event-card' la card
+
+  // Construiește structura HTML a cardului folosind datele din 'eventData'
+  const contentMarkup = `
+    <header>
+      <h2 class="event-title text-2xl font-bold">${eventData.eventName}</h2>
+    </header>
+    <div class="content-event">
+      <img src="${eventData.imageUrl}" alt="${eventData.eventName}" class="event-image">
+      <p class="description text-gray-700">${eventData.eventDescription}</p>
+      <p class="venue text-gray-700">${eventData.venue}</p>
+      <div class="ticket-section">
+        <p class="ticket-type-text">Choose Ticket Type:</p>
+        <select class="ticket-type-${eventData.eventID} bg-white border border-gray-300 px-2 py-1 rounded mt-2">
+          <option value="${eventData.ticketCategory[0].ticketCategoryId}">${eventData.ticketCategory[0].description}</option>
+          <option value="${eventData.ticketCategory[1].ticketCategoryId}">${eventData.ticketCategory[1].description}</option>
+        </select>
+        <div class="quantity">
+          <button class="quantity-btn decrease">-</button>
+          <input type="number" class="ticket-quantity" value="1" min="1">
+          <button class="quantity-btn increase">+</button>
+        </div>
+        <button class="buy-button bg-blue-500 text-white px-4 py-2 rounded mt-2" id="buyTicketsBtn">Buy Tickets</button>
+      </div>
+    </div>
+  `;
+
+  // Setează conținutul cardului cu markup-ul generat mai sus
+  eventCard.innerHTML = contentMarkup;
+
+  // Aici poți adăuga orice alte interacțiuni sau evenimente pentru cardul evenimentului
+
+  // Întoarce cardul evenimentului pentru a fi adăugat ulterior la containerul de evenimente
+  return eventCard;
 }
 
 
@@ -114,9 +223,11 @@ async function sortOrders(ascending) {
   }
 }
 
-async function renderHomePage(eventsData) {
+async function renderHomePage() {
   const mainContentDiv = document.querySelector('.main-content-component');
   mainContentDiv.innerHTML = getHomePageTemplate();
+
+  const eventsData = await fetchTicketEvents();
 
   console.log('function', fetchTicketEvents());
   fetchTicketEvents().then((data)=>{
@@ -128,7 +239,7 @@ async function renderHomePage(eventsData) {
   const eventImages = [
     'src/assets/untold.jpg',
     'src/assets/electric.jpg',
-    'src/assets/football.jpg',
+    'src/assets/football.png',
     'src/assets/wine.jpg',
   ];
   
@@ -136,7 +247,6 @@ async function renderHomePage(eventsData) {
   eventsData.forEach((eventData, index) => {
     const eventCard = document.createElement('div');
     eventCard.classList.add('event-card');
-    console.log('bbbbb', eventData)
 
     const eventImage = eventImages[index];
 
@@ -147,6 +257,7 @@ async function renderHomePage(eventsData) {
   <div class="content-event">
   <img src="${eventImage}" alt="${eventData.eventName}" class="event-image">
     <p class="description text-gray-700">${eventData.eventDescription}</p>
+    <p class="venue text-gray-700"> ${eventData.venue}</p>
     <div class="ticket-section">
       <p class="ticket-type-text">Choose Ticket Type:</p>
       <select class="ticket-type-${eventData.eventID} bg-white border border-gray-300 px-2 py-1 rounded mt-2">
@@ -163,6 +274,13 @@ async function renderHomePage(eventsData) {
   </div>
 `;
 
+const showEventButton = document.getElementById('showEventButton');
+  console.log('input',showEventButton)
+  if (showEventButton) {
+    showEventButton.addEventListener('click', () => {
+      performSearch(eventsData); // Apelează funcția performSearch() pentru a afișa evenimentele filtrate
+    });
+  }
 
     eventCard.innerHTML = contentMarkup;
     eventsContainer.appendChild(eventCard);
@@ -175,7 +293,7 @@ async function renderHomePage(eventsData) {
      const ticketCategorySelect= document.querySelector(`.ticket-type-${eventData.eventID}`);
      
       const ticketCategoryID = parseInt(ticketCategorySelect.value);
-      const eventID = eventData.eventID; // ID-ul evenimentului
+      const eventID = eventData.eventID; 
       const numberOfTickets = parseInt(quantityInput.value);
 console.log('aaaa', eventID);
 
@@ -198,8 +316,57 @@ console.log(orderData);
   setupQuantityButtons();
 
 
+
+  const searchButton = document.getElementById('eventSearchButton');
+  const eventNameSearch = document.getElementById('eventNameSearch');
+  const showEventButton = document.getElementById('showEventButton');
+
+const eventSearchInput = document.getElementById('eventSearchInput');
+
+  searchButton.addEventListener('click', async () => {
+    const searchTerm = eventNameSearch.value.toLowerCase().trim();
+    
+    const filteredEvents = eventsData.filter((eventData) =>
+      eventData.eventName.toLowerCase().includes(searchTerm)
+    );
+
+    renderFilteredEvents(filteredEvents);
+  });
+
+  // showEventButton.addEventListener('click', () => {
+  //   const searchTerm = eventSearchInput.value.trim().toLowerCase();
+
+  //   // Filtrăm evenimentele care conțin termenul de căutare în numele lor
+  //   const filteredEvents = eventsData.filter((eventData) =>
+  //     eventData.eventName.toLowerCase().includes(searchTerm)
+  //   );
+  
+  //   // Afișăm evenimentele filtrate pe pagină
+  //   // renderFilteredEvents(filteredEvents);
+  //   // renderContent('/events');
+  // });
+
+  const filterByVenueBtn = document.getElementById('filterByVenueBtn');
+  filterByVenueBtn.addEventListener('click', () => {
+    filterEventsByVenue(eventsData);
+  });
+
 }
 
+function filterEventsByVenue(eventsData) {
+  const venueToFilter = prompt('Introduceți locația (venue) pentru filtrare:');
+  if (!venueToFilter) return; 
+
+  const filteredEvents = eventsData.filter((eventData) =>
+    eventData.venue.toLowerCase() === venueToFilter.toLowerCase()
+  );
+
+  if (filteredEvents.length === 0) {
+    alert('Nu au fost găsite evenimente la această locație.');
+  } else {
+    renderFilteredEvents(filteredEvents);
+  }
+}
 
 async function fetchTicketEvents() {
   const response = await fetch('https://localhost:7245/api/Event/GetAll');
@@ -307,6 +474,10 @@ async function patchOrders(orderID, numberOfTickets, ticketCategoryID) {
 async function renderOrderRow(orderData) {
   const orderRow = document.createElement('tr');
   orderRow.classList.add('order-row');
+  const ticketCategoryOptions = `
+    <option value="Standard">Standard</option>
+    <option value="VIP">VIP</option>
+  `;
   const contentMarkup = `
   <td class="order-details">${orderData.orderID}</td>
   <td class="order-details">${orderData.orderedAt}</td>
@@ -440,15 +611,19 @@ ordersTable.innerHTML = tableHeaderMarkup;
 
 
 // Render content based on URL
-async function renderContent(url) {
+async function renderContent(url, eventCard) {
   const mainContentDiv = document.querySelector('.main-content-component');
   mainContentDiv.innerHTML = '';
+  if (url === '/') {
+    const eventsData = await fetchTicketEvents();
+    await renderHomePage(eventsData);
+  }
 
   if (url === '/') {
     const eventsData = await fetchTicketEvents();
-    renderHomePage(eventsData);
+    await renderHomePage(eventsData);
   } else if (url === '/orders') {
-    renderOrdersPage();
+    await renderOrdersPage();
   }
 }
 
@@ -458,5 +633,5 @@ document.addEventListener('DOMContentLoaded', () => {
   setupMobileMenuEvent();
   setupPopstateEvent();
   setupInitialPage();
-  setupSortButtons();
+  //setupSortButtons();
 });
