@@ -1,5 +1,6 @@
 body {
   font-family: 'Roboto', sans-serif;
+  background-color: #111; 
 }
 
 .events {
@@ -22,7 +23,7 @@ h1 {
 }
 
 .event-title {
-  color: #de411b
+  color: rgb(33, 103, 253);
 }
 
 .event img {
@@ -48,7 +49,7 @@ h1 {
 }
 
 .link-item {
-  color: #de411b
+  color: red;
 }
 
 .logo {
@@ -57,11 +58,11 @@ h1 {
 }
 
 .add-btn {
-  background-color: #de411b;
+  background-color: red;
 }
 
 .add-to-cart-btn {
-  background: #de411b;
+  background: red;
   margin: 22px auto;
   display: block;
   width: 100%;
@@ -70,4 +71,269 @@ h1 {
 .main-content-component {
   margin-bottom: 40px;
 }
+.event-card {
+  height: 450px;
+  width: 300px;
+  border: 1px solid #ebf1f6;
+  box-shadow: 0 0 2px 0 rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12);
+  margin: 10px; 
+  padding: 16px; 
+  background-color: #fff; 
+  border-radius: 8px; 
+}
 
+.event-card .event-title {
+  color: red;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.event-card .description {
+  color: #333; 
+  font-size: 14px;
+}
+
+.event-card .buy-button {
+  background-color: red;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-align: center; 
+  width: 100%; 
+  margin-top: 10px; 
+}
+
+.event-card .buy-button:hover {
+  background-color: #00b300;
+}
+
+.event-card .content {
+  margin-top: 12px; 
+}
+
+.event-card .ticket-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-card .ticket-type {
+  margin-bottom: 8px; 
+}
+
+.event-card .buy-button {
+  align-self: flex-start;
+}
+
+.event-card .content {
+  margin-top: 12px;
+}
+
+#content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.event-image {
+  height: 150px;
+  max-width: 100%; 
+  margin-bottom: 10px;
+}
+
+#content-event img {
+  width: 100vw; 
+  height: 150px;
+} 
+
+#content img {
+  width: 100vw;
+  height: auto;
+}
+.event-card .ticket-section {
+  margin-top: 10px;
+}
+
+.event-card .ticket-type-text {
+  font-size: 14px;
+  color: #555;
+}
+
+.event-card .ticket-type {
+  margin-top: 4px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.event-card .quantity {
+  display: flex;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.event-card .quantity-btn {
+  background-color: #ddd;
+  border: none;
+  color: #333;
+  font-size: 16px;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.event-card .quantity-btn:hover {
+  background-color: #ccc;
+}
+
+.event-card .ticket-quantity {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px;
+  margin: 0 4px;
+  width: 40px;
+  text-align: center;
+}
+
+.black-background {
+  background-color: rgba(0, 0, 0, 0.1); 
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.orders-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.orders-table th{
+  color:black;
+}
+
+.orders-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+  color: rgb(0, 0, 0);
+}
+
+.orders-table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.order-details {
+  margin-bottom: 12px;
+}
+
+.order-details p {
+  margin: 6px 0;
+  font-size: 14px;
+}
+
+.order-details strong {
+  font-weight: bold;
+}
+
+.order-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn {
+  padding: 6px 12px;
+  margin-left: 6px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  background-color: white;
+}
+
+.btn-modify {
+  background-color: #ffcc00; 
+}
+
+.btn-delete {
+  background-color: #dc3545; 
+}
+
+.btn-save {
+  background-color: #28a745; 
+  display: none; 
+}
+
+.btn-cancel {
+  background-color: #dc3545; 
+  display: none; 
+}
+
+.order-row {
+  background-color: #f0f0f0; 
+}
+
+.order-row:nth-child(odd) {
+  background-color: #fff; 
+}
+
+.order-row:hover {
+  background-color: #e0e0e0; 
+}
+
+#eventSearchInput {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+#searchButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#searchButton:hover {
+  background-color: #0056b3;
+}
+
+#showEventButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ff3333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+#showEventButton:hover {
+  background-color: #cc0000;
+}
+
+#filterByVenueBtn {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ffcc00; 
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px; 
+}
+
+#filterByVenueBtn:hover {
+  background-color: #ffaa00; 
+}
