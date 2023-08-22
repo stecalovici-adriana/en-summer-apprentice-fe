@@ -1,7 +1,6 @@
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #111; /* Set the background color to a dark gray/black */
-  
+  background-color: #111; 
 }
 
 .events {
@@ -72,36 +71,29 @@ h1 {
 .main-content-component {
   margin-bottom: 40px;
 }
-
-/* Add your existing styles here */
-
 .event-card {
   height: 450px;
   width: 300px;
   border: 1px solid #ebf1f6;
   box-shadow: 0 0 2px 0 rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12);
-  margin: 10px; /* Add some margin for spacing between event cards */
-  padding: 16px; /* Add padding for content inside the event card */
-  background-color: #fff; /* Set a background color for the event card */
-  border-radius: 8px; /* Add border-radius for rounded corners */
+  margin: 10px; 
+  padding: 16px; 
+  background-color: #fff; 
+  border-radius: 8px; 
 }
-
 
 .event-card .event-title {
   color: red;
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 8px;
-  
 }
 
-
 .event-card .description {
-  color: #333; /* Adjust text color for description */
+  color: #333; 
   font-size: 14px;
 }
 
-/* Stilizare pentru butonul de cumpărare */
 .event-card .buy-button {
   background-color: red;
   color: #fff;
@@ -110,18 +102,17 @@ h1 {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
-  text-align: center; /* Aliniere text pe mijloc */
-  width: 100%; /* Lățime completă pentru aliniere */
-  margin-top: 10px; /* Adăugăm un spațiu între buton și secțiunea de ticket-uri */
+  text-align: center; 
+  width: 100%; 
+  margin-top: 10px; 
 }
 
 .event-card .buy-button:hover {
   background-color: #00b300;
 }
 
-
 .event-card .content {
-  margin-top: 12px; /* Adjust the top margin for spacing */
+  margin-top: 12px; 
 }
 
 .event-card .ticket-section {
@@ -130,11 +121,11 @@ h1 {
 }
 
 .event-card .ticket-type {
-  margin-bottom: 8px; /* Add spacing between dropdown and button */
+  margin-bottom: 8px; 
 }
 
 .event-card .buy-button {
-  align-self: flex-start; /* Align the button to the left */
+  align-self: flex-start;
 }
 
 .event-card .content {
@@ -149,7 +140,7 @@ h1 {
 
 .event-image {
   height: 150px;
-  max-width: 100%; /* Ensure the image doesn't exceed the card's width */
+  max-width: 100%; 
   margin-bottom: 10px;
 }
 
@@ -159,14 +150,9 @@ h1 {
 } 
 
 #content img {
-  width: 100vw; /* Set the width to 100% of the viewport width */
-  height: auto; /* Automatically adjust height to maintain aspect ratio */
+  width: 100vw;
+  height: auto;
 }
-
-
-
-
-
 .event-card .ticket-section {
   margin-top: 10px;
 }
@@ -214,10 +200,9 @@ h1 {
 }
 
 .black-background {
-  background-color: rgba(0, 0, 0, 0.1); /* Set the background color to white */
+  background-color: rgba(0, 0, 0, 0.1); 
 }
 
-/* Stilizare pentru tabelul de comenzi */
 .orders-table {
   width: 100%;
   border-collapse: collapse;
@@ -238,15 +223,13 @@ h1 {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: center;
-  color: rgb(0, 0, 0); /* Adăugați această linie pentru a seta culoarea textului la alb */
+  color: rgb(0, 0, 0);
 }
 
 .orders-table th {
   background-color: #f0f0f0;
   font-weight: bold;
 }
-
-
 
 .order-details {
   margin-bottom: 12px;
@@ -266,8 +249,6 @@ h1 {
   justify-content: flex-end;
 }
 
-
-
 .btn {
   padding: 6px 12px;
   margin-left: 6px;
@@ -278,37 +259,34 @@ h1 {
   background-color: white;
 }
 
-
 .btn-modify {
-  background-color: #ffcc00; /* Blue for modify button */
+  background-color: #ffcc00; 
 }
 
 .btn-delete {
-  background-color: #dc3545; /* Red for delete button */
+  background-color: #dc3545; 
 }
 
 .btn-save {
-  background-color: #28a745; /* Green for save button */
-  display: none; /* Hide the save button initially */
+  background-color: #28a745; 
+  display: none; 
 }
 
 .btn-cancel {
-  background-color: #dc3545; /* Red for cancel button */
-  display: none; /* Hide the cancel button initially */
+  background-color: #dc3545; 
+  display: none; 
 }
 
-
-/* Stilizare pentru rândurile de comenzi (.order-row) */
 .order-row {
-  background-color: #f0f0f0; /* Set the background color for even rows */
+  background-color: #f0f0f0; 
 }
 
 .order-row:nth-child(odd) {
-  background-color: #fff; /* Set the background color for odd rows */
+  background-color: #fff; 
 }
 
 .order-row:hover {
-  background-color: #e0e0e0; /* Change background color on hover */
+  background-color: #e0e0e0; 
 }
 
 #eventSearchInput {
@@ -317,8 +295,6 @@ h1 {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-
-/* Stilizare pentru butonul de căutare */
 #searchButton {
   padding: 10px 20px;
   font-size: 16px;
@@ -328,13 +304,10 @@ h1 {
   border-radius: 5px;
   cursor: pointer;
 }
-
-/* Stilizare pentru butonul de căutare la hover */
 #searchButton:hover {
   background-color: #0056b3;
 }
 
-/* Stilizare pentru butonul "Show Event" */
 #showEventButton {
   padding: 10px 20px;
   font-size: 16px;
@@ -343,25 +316,24 @@ h1 {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 10px; /* Adăugăm un spațiu între butoane */
+  margin-top: 10px;
 }
 
 #showEventButton:hover {
   background-color: #cc0000;
 }
 
-/* Stilizare pentru butonul de filtrare după locație */
 #filterByVenueBtn {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #ffcc00; /* Schimbați culoarea de fundal a butonului la alegerea dvs. */
+  background-color: #ffcc00; 
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 10px; /* Adăugați un spațiu între buton și celelalte elemente */
+  margin-top: 10px; 
 }
 
 #filterByVenueBtn:hover {
-  background-color: #ffaa00; /* Schimbați culoarea butonului la hover, dacă doriți */
+  background-color: #ffaa00; 
 }

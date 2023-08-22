@@ -1,10 +1,8 @@
-// Navigate to a specific URL
 function navigateTo(url) {
   history.pushState(null, null, url);
   renderContent(url);
 }
 
-// HTML templates
 function getHomePageTemplate() {
   return `
     <div id="content">
@@ -13,15 +11,13 @@ function getHomePageTemplate() {
       <input type="text" id="eventSearchInput" placeholder="Search event by name">
       <button id="eventSearchButton">Search</button>
       <button id="showEventButton">Show Event</button>
-      <button id="filterByVenueBtn">Filtrare după Locație</button>
+      <button id="filterByVenueBtn">Filter by venue</button>
       </div>
       <div class="events flex items-center justify-center flex-wrap">
       </div>
     </div>
   `;
 }
-
-
 
 function getOrdersPageTemplate() {
   return `
@@ -62,7 +58,7 @@ function setupPopstateEvent() {
   window.addEventListener('popstate', () => {
     const currentUrl = window.location.pathname;
     renderContent(currentUrl);
-    setupSortButtons(); // Adăugați această linie pentru a re-atașa evenimentele de sortare
+    setupSortButtons();
   });
 }
 
@@ -81,85 +77,46 @@ function setupSortButtons() {
 async function setupInitialPage() {
   const initialUrl = window.location.pathname;
   await renderContent(initialUrl);
-
-  const eventSearchInput = document.getElementById('eventSearchInput');
-  // const showEventButton = document.getElementById('showEventButton');
-  // console.log('input',showEventButton)
-  // if (showEventButton) {
-  //   showEventButton.addEventListener('click', () => {
-  //     performSearch(); // Apelează funcția performSearch() pentru a afișa evenimentele filtrate
-  //   });
-  // }
+  
   const sortAscendingBtn = document.getElementById('sortAscendingBtn');
   const sortDescendingBtn = document.getElementById('sortDescendingBtn');
 
   if (sortAscendingBtn && sortDescendingBtn) {
     setupSortButtons(); 
   }
-  
 }
-
-
 
 function filterEventsByName(eventsData, searchTerm) {
   console.log('dataa', eventsData);
   return eventsData.filter((eventData) =>
     eventData.eventName.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
 }
 
 function performSearch(eventsData) {
-  
   const searchInput = document.getElementById('eventSearchInput').value.toLowerCase().trim();
-
-  console.log('input', searchInput, eventsData);
-
   const filteredEvents = filterEventsByName(eventsData, searchInput);
   renderFilteredEvents(filteredEvents);
 }
 
-
-/*function renderFilteredEvents(filteredEvents) {
-
-  console.log('filter', filteredEvents);
-
-  const eventsContainer = document.querySelector('.events');
-  eventsContainer.innerHTML = '';
-  const eventCard = document.createElement('div');
-  if (filteredEvents.length === 0) {
-    const noResultsMessage = document.createElement('p');
-    noResultsMessage.textContent = 'Nu au fost găsite evenimente care să corespundă căutării.';
-    eventsContainer.appendChild(noResultsMessage);
-  } else {
-    filteredEvents.forEach((event) => {
-      eventsContainer.appendChild(eventCard);
-    });
-  }
-  
-}*/
-
 function renderFilteredEvents(filteredEvents) {
   const eventsContainer = document.querySelector('.events');
   eventsContainer.innerHTML = '';
-
   if (filteredEvents.length === 0) {
     const noResultsMessage = document.createElement('p');
     noResultsMessage.textContent = 'Nu au fost găsite evenimente care să corespundă căutării.';
     eventsContainer.appendChild(noResultsMessage);
   } else {
     filteredEvents.forEach((event) => {
-      const eventCard = createEventCard(event); // Creează un card pentru fiecare eveniment
-      eventsContainer.appendChild(eventCard); // Adaugă cardul evenimentului în container
+      const eventCard = createEventCard(event); 
+      eventsContainer.appendChild(eventCard); 
     });
   }
 }
-function createEventCard(eventData) {
-  // Creează un element <div> pentru cardul evenimentului
-  const eventCard = document.createElement('div');
-  eventCard.classList.add('event-card'); // Adaugă clasa CSS 'event-card' la card
 
-  // Construiește structura HTML a cardului folosind datele din 'eventData'
+function createEventCard(eventData) {
+  const eventCard = document.createElement('div');
+  eventCard.classList.add('event-card'); 
   const contentMarkup = `
     <header>
       <h2 class="event-title text-2xl font-bold">${eventData.eventName}</h2>
@@ -183,25 +140,15 @@ function createEventCard(eventData) {
       </div>
     </div>
   `;
-
-  // Setează conținutul cardului cu markup-ul generat mai sus
   eventCard.innerHTML = contentMarkup;
-
-  // Aici poți adăuga orice alte interacțiuni sau evenimente pentru cardul evenimentului
-
-  // Întoarce cardul evenimentului pentru a fi adăugat ulterior la containerul de evenimente
   return eventCard;
 }
-
 
 async function renderOrders() {
   const ordersData = await fetchOrders();
   const ordersContainer = document.querySelector('.orders');
-  
-  // Golește containerul de comenzilor existente
   ordersContainer.innerHTML = '';
 
-  // Iterează prin comenzile sortate și adaugă-le la container
   for (const orderData of ordersData) {
     const orderRow = await renderOrderRow(orderData);
     ordersContainer.appendChild(orderRow);
@@ -215,11 +162,11 @@ async function sortOrders(ascending) {
   });
 
   const ordersTable = document.querySelector('.orders-table tbody');
-  ordersTable.innerHTML = ''; // Clear the existing table body
+  ordersTable.innerHTML = ''; 
 
   for (const orderData of ordersData) {
     const orderRow = await renderOrderRow(orderData);
-    ordersTable.appendChild(orderRow); // Append the sorted rows to the existing table body
+    ordersTable.appendChild(orderRow); 
   }
 }
 
@@ -235,21 +182,16 @@ async function renderHomePage() {
   })
 
   const eventsContainer = document.querySelector('.events');
-
   const eventImages = [
     'src/assets/untold.jpg',
     'src/assets/electric.jpg',
     'src/assets/football.png',
     'src/assets/wine.jpg',
   ];
-  
-
   eventsData.forEach((eventData, index) => {
     const eventCard = document.createElement('div');
     eventCard.classList.add('event-card');
-
     const eventImage = eventImages[index];
-
     const contentMarkup = `
   <header>
     <h2 class="event-title text-2xl font-bold">${eventData.eventName}</h2>
@@ -278,16 +220,14 @@ const showEventButton = document.getElementById('showEventButton');
   console.log('input',showEventButton)
   if (showEventButton) {
     showEventButton.addEventListener('click', () => {
-      performSearch(eventsData); // Apelează funcția performSearch() pentru a afișa evenimentele filtrate
+      performSearch(eventsData); 
     });
   }
 
     eventCard.innerHTML = contentMarkup;
     eventsContainer.appendChild(eventCard);
-
     const buyTicketsButton = eventCard.querySelector('#buyTicketsBtn');
     const quantityInput = eventCard.querySelector('.ticket-quantity');
-
     buyTicketsButton.addEventListener('click', async () => 
     {
      const ticketCategorySelect= document.querySelector(`.ticket-type-${eventData.eventID}`);
@@ -295,19 +235,14 @@ const showEventButton = document.getElementById('showEventButton');
       const ticketCategoryID = parseInt(ticketCategorySelect.value);
       const eventID = eventData.eventID; 
       const numberOfTickets = parseInt(quantityInput.value);
-console.log('aaaa', eventID);
-
       const orderData = {
         ticketCategoryId:+ticketCategoryID,
         eventId:+eventID,
         numberOfTickets:+numberOfTickets
       };
-console.log(orderData);
       try {
         const response = await placeOrder(orderData);
-        console.log('Order placed:', response);
       } catch (error) {
-        console.error('Error placing order:', error);
       }
     });
 
@@ -315,13 +250,8 @@ console.log(orderData);
   });
   setupQuantityButtons();
 
-
-
   const searchButton = document.getElementById('eventSearchButton');
   const eventNameSearch = document.getElementById('eventNameSearch');
-  const showEventButton = document.getElementById('showEventButton');
-
-const eventSearchInput = document.getElementById('eventSearchInput');
 
   searchButton.addEventListener('click', async () => {
     const searchTerm = eventNameSearch.value.toLowerCase().trim();
@@ -332,19 +262,6 @@ const eventSearchInput = document.getElementById('eventSearchInput');
 
     renderFilteredEvents(filteredEvents);
   });
-
-  // showEventButton.addEventListener('click', () => {
-  //   const searchTerm = eventSearchInput.value.trim().toLowerCase();
-
-  //   // Filtrăm evenimentele care conțin termenul de căutare în numele lor
-  //   const filteredEvents = eventsData.filter((eventData) =>
-  //     eventData.eventName.toLowerCase().includes(searchTerm)
-  //   );
-  
-  //   // Afișăm evenimentele filtrate pe pagină
-  //   // renderFilteredEvents(filteredEvents);
-  //   // renderContent('/events');
-  // });
 
   const filterByVenueBtn = document.getElementById('filterByVenueBtn');
   filterByVenueBtn.addEventListener('click', () => {
@@ -387,7 +304,7 @@ async function fetchOrders() {
 }
 
 async function placeOrder(orderData) {
-  const url = 'http://localhost:8080/createOrder'; // Replace with your actual API endpoint
+  const url = 'http://localhost:8080/createOrder'; 
   const options = {
     method: 'POST',
     headers: {
@@ -442,7 +359,7 @@ function setupQuantityButtons() {
 }
 
 async function patchOrders(orderID, numberOfTickets, ticketCategoryID) {
-  const url = `https://localhost:7245/api/Order/Patch`; // Update with the correct URL
+  const url = `https://localhost:7245/api/Order/Patch`;
   const patchData = {
     orderId: orderID,
     numberOfTickets: numberOfTickets,
@@ -516,7 +433,6 @@ orderRow.innerHTML = contentMarkup;
 
   saveButton.addEventListener('click', () => {
     const newTicketCount = inputTicketCount.value;
-    // Aici poți adăuga cod pentru a actualiza numărul de bilete în obiectul orderData sau în altă parte
     ticketCountDisplay.textContent = newTicketCount;
 
     modifyButton.style.display = 'inline';
@@ -541,14 +457,12 @@ orderRow.innerHTML = contentMarkup;
   deleteButton.addEventListener('click', async () => {
     const result = await deleteEventById(orderData.orderID);
     if (result.success) {
-      // Dacă ștergerea a fost cu succes, reîncărcați pagina pentru a reflecta modificările
       renderOrdersPage();
     } else {
       console.error('Error deleting order:', result.message);
     }
   });
 
-  //orderRow.innerHTML = contentMarkup;
   return orderRow;
 }
 
@@ -574,12 +488,9 @@ async function deleteEventById(orderID) {
 async function renderOrdersPage() {
   const mainContentDiv = document.querySelector('.main-content-component');
   mainContentDiv.innerHTML = getOrdersPageTemplate();
-
   const ordersData = await fetchOrders();
-
   const ordersTable = document.createElement('table');
   ordersTable.classList.add('orders-table');
-
   const tableHeaderMarkup = `
   <thead>
     <tr>
@@ -594,23 +505,18 @@ async function renderOrdersPage() {
   `;
 
 ordersTable.innerHTML = tableHeaderMarkup;
-
   const tableBody = document.createElement('tbody');
   console.log("OrdersData",orderData);
   for (const orderData of ordersData) {
     const orderRow = await renderOrderRow(orderData);
     tableBody.appendChild(orderRow);
   }
-
   ordersTable.appendChild(tableBody);
   mainContentDiv.appendChild(ordersTable);
 
   setupSortButtons();
 }
 
-
-
-// Render content based on URL
 async function renderContent(url, eventCard) {
   const mainContentDiv = document.querySelector('.main-content-component');
   mainContentDiv.innerHTML = '';
@@ -627,11 +533,9 @@ async function renderContent(url, eventCard) {
   }
 }
 
-// Call the setup functions
 document.addEventListener('DOMContentLoaded', () => {
   setupNavigationEvents();
   setupMobileMenuEvent();
   setupPopstateEvent();
   setupInitialPage();
-  //setupSortButtons();
 });
